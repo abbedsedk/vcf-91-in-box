@@ -16,6 +16,35 @@ Deploy a fully functional VMware Cloud Foundation 9.1 environment on one, two or
 * [Additional Blog Resources](#additional-blog-resources)
 
 ## Changelog
+* **07/03/26**
+  * related blog posts: [vcf-9.1-in-a-box-nfs](https://strivevirtually.net/post/vcf-9.1-in-a-box-nfs/)
+  * Changed to 2 ESXi Nodes with a  3rd box for NFS datastore running on Rocky Linux 9 VM with 8vnic bonded with MTU 9000 on VMware Workstation on Windows bridged to 10G nic with MTU 9014
+  * Updated KS1.CFG :
+    * Disabled NVME because I don't have a dedicated disk for it (multiple partitions is no longer possible since ESXi 9.1 although it was not support from technical preview in 8.0u3)
+    * add NFS variables
+    * Customized SMBIOS : Use it if you have 2 different motherboards, I have an Asrock B550 Pro4 + an Asrock X570 Pro4 (from the [BOM](https://strivevirtually.net/post/1.-vcf-9.0-homelab-physical-setup-and-bom/)), for identical motherboards use CUSTOMIZED_SMBIOS=""
+    * NSX Edge workaround for non-EPYC systems (change the value for your own Ryzen)
+    * NFS configuration : Portgroup with VLAN, MTU, VMKernel IP and mounting the Datastore with vmknic binding and with 8 connections on first ESXi host
+  * Updated KS2.CFG :
+    * Disabled NVME because I don't have a dedicated disk for it (multiple partitions is no longer possible since ESXi 9.1 although it was not support from technical preview in 8.0u3)
+    * add NFS variables
+    * NSX Edge workaround for non-EPYC systems (change the value for your own Ryzen)
+    * NFS configuration :  Portgroup with VLAN, MTU, VMKernel IP and max 8 connections on second ESXi host and not mounting the datastore
+  * Updated setup_vcf_installer.ps1:
+    * Moved "Configuring HTTP Offline Depot for VCF Installer ..." after the configuration overrides have been applied
+    * add a return needed for Windows user to avoid ^M in "echo 'y' | '/opt/vmware/vcf/operationsmanager/scripts/cli/sddcmanager_restart_services.sh'\n"
+  * Updated deploy_vcf_installer.sh : Using ovftool from VCSA 9.1 extracted folder
+  * Updated two-node-nfs.json
+    * NFS VLAN 0
+    * NFS MTU 1700
+    * activeUplinks uplink1/vmnic0 for all networks except NFS activeUplinks uplink2/vmnic1
+    * standbyUplinks  uplink2/vmnic1 for all networks except NFS standbyUplinks uplink1/vmnic0
+    * "nfsDatastoreSpec"
+				*						"enableBindToVmknic": true
+		  * "existingDatastoreName": true
+    * "vmnicsToUplinks"
+    *      "uplink": "uplink1", "id": "vmnic0"
+    *      "uplink": "uplink2", "id": "vmnic1"
 
 * **05/28/2026**
   * Initial Release
