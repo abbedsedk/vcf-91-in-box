@@ -45,6 +45,8 @@ Deploy a fully functional VMware Cloud Foundation 9.1 environment on one, two or
     * "vmnicsToUplinks"
     *      "uplink": "uplink1", "id": "vmnic0"
     *      "uplink": "uplink2", "id": "vmnic1"
+    * Removed VCF Automation from the bringup because only have 2 host of 128GB and no Memory tiering enabled
+	   * "vcfAutomationSpec": null
 
 * **05/28/2026**
   * Initial Release
