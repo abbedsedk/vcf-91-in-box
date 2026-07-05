@@ -100,7 +100,7 @@ if($VCFInstallerSoftwareDepot -eq "offline") {
     }
 }
 
-$script += "echo 'y' | '/opt/vmware/vcf/operationsmanager/scripts/cli/sddcmanager_restart_services.sh'\n"
+$script += "echo 'y' | /opt/vmware/vcf/operationsmanager/scripts/cli/sddcmanager_restart_services.sh`n"
 
 $script | Out-File $scriptName
 
