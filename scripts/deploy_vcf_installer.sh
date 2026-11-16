@@ -1,8 +1,8 @@
 #!/bin/bash
 # Author: William Lam
 
-OVFTOOL="E:\Offline-Depot-9.1.0.0\PROD\COMP\VCENTER\VMware-VCSA-all-9.1.0.0.25370922\vcsa\ovftool\win32\ovftool.exe"
-VCF_INSTALLER_OVA="E:\Offline-Depot-9.1.0.0\PROD\COMP\SDDC_MANAGER_VCF\VCF-SDDC-Manager-Appliance-9.1.0.0.25371088.ova"
+OVFTOOL="E:\Offline-Depot-9.1.1.0\PROD\COMP\VCENTER\VMware-VCSA-all-9.1.1.0.25712839\vcsa\ovftool\win32\ovftool.exe"
+VCF_INSTALLER_OVA="E:\Offline-Depot-9.1.1.0\PROD\COMP\SDDC_MANAGER_VCF\VCF-SDDC-Manager-Appliance-9.1.1.0.25713928.ova"
 
 # Check if ovftool exists and is executable
 if [[ ! -x "$OVFTOOL" ]]; then
