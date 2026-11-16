@@ -1,5 +1,5 @@
 {
-    "version": "9.1.0.0",
+    "version": "9.1.1.0",
     "vcfInstanceName": "Abbed Sedkaoui VCF 9.1 Instance",
     "sddcId": "vcf-m01",
     "ceipEnabled": true,
@@ -117,7 +117,7 @@
         "ipv4Pool": {
             "ipRange": {
                 "startIpAddress": "172.30.0.33",
-                "endIpAddress": "172.30.0.46"
+                "endIpAddress": "172.30.0.62"
             }
         },
         "platformFqdn": "vcf9-vsp01.abidi.systems",
@@ -249,7 +249,7 @@
                         "name": "vcf-vlan-TZ"
                     }
                 ],
-                "hostSwitchOperationalMode": "ENS"
+                "hostSwitchOperationalMode": "ENS_INTERRUPT"
             },
 			"vmnicsToUplinks": [
 				{
