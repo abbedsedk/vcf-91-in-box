@@ -28,11 +28,7 @@ $VCFOperationsManagerProperties = @{
 
 # Configuration offline depot 
 $VCFInstallerSoftwareDepot = "offline"
-$VCFInstallerDepotUsername = "vcf"
-$VCFInstallerDepotPassword = "vcf123!"
-$VCFInstallerDepotHost = "192.168.1.250"
-$VCFInstallerDepotPort = 8888
-$VCFInstallerDepotHttps = $false
+$VCFInstallerDepotUrl = "http://192.168.1.250:8888"
 
 #### DO NOT EDIT BEYOND HERE ####
 
@@ -92,14 +88,6 @@ $VCFFeatureProperties.GetEnumerator() | Foreach-Object {
 }
 $script += "chmod 755 ${vcfFeatureConfigFile}`n"
 
-if($VCFInstallerSoftwareDepot -eq "offline") {
-    $vcfLcmConfigFile = "/opt/vmware/vcf/lcm/lcm-app/conf/application-prod.properties"
-
-    if($VCFInstallerDepotHttps -eq $false) {
-        $script += "sed -i -e `"/lcm.depot.adapter.port=.*/a lcm.depot.adapter.httpsEnabled=false`" ${vcfLcmConfigFile}`n"
-    }
-}
-
 $script += "echo 'y' | /opt/vmware/vcf/operationsmanager/scripts/cli/sddcmanager_restart_services.sh`n"
 
 $script | Out-File $scriptName
@@ -152,14 +140,9 @@ $headers += @{
 }
 
 $depotPayload = @{
-	"offlineAccount" = [Ordered]@{
-		"username" = $VCFInstallerDepotUsername
-		"password" = $VCFInstallerDepotPassword
-	}
 	"depotConfiguration" = @{
 		"isOfflineDepot" = $true
-		"hostname" = $VCFInstallerDepotHost
-		"port" = $VCFInstallerDepotPort
+        "url" = $VCFInstallerDepotUrl
 	}
 }
 $depotBody = $depotPayload | ConvertTo-Json
