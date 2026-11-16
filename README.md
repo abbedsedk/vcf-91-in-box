@@ -16,6 +16,20 @@ Deploy a fully functional VMware Cloud Foundation 9.1 environment on one, two or
 * [Additional Blog Resources](#additional-blog-resources)
 
 ## Changelog
+* **11/16/2026**
+  * related blog posts: [vcf-9.1.1-in-a-box-nfs](https://strivevirtually.net/post/vcf-9.1.1-in-a-box-nfs/)
+  * Kickstart script:
+    * Reverted to deploy ESXi on booted USB disk, like in VCF 9.x in box, to allow partitioning of the local disk for the purpose of leaving 10%, 
+    * optionally with **SSD_SIZE_MINUS_10PCT**, unpartitioned at the end so that NVMe Garbage Collection has more space and extend disk life. [Read Intensif SSD dedicate only 7% (ex 2000GB seen on CrystalDiskInfo and 1863GB seen on Diskpart).]https://blogs.vmware.com/cloud-foundation/2026/09/18/nvme-drive-selection-for-memory-tiering-explained/) 
+    * **OS_DATA** partition set to 32GB
+    * From [**documentation**](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/deployment/deploying-a-new-vmware-cloud-foundation-or-vmware-vsphere-foundation-private-cloud-/preparing-your-environment/preparing-esx-hosts-for-vmware-cloud-foundation-or-vmware-vsphere-foundation/mount-nfs-datastore-to-an-esx-host(1).html#GUID-d2f85af5-dd2c-4c62-82a8-03ed4b49e2ce-en_id-3ebfd92c-abb9-408a-e550-1676a6c74eb3) we will use the same port group name as in NFS network spec `"portGroupKey": "DVPG_FOR_NFS",` in two-node-nfs.json for KS1.cfg 
+    * Removed NFS configuration in KS2.CFG
+  * Updated two-node-nfs.json:
+    * Moved to VCF Management Services Ip pool to block /27 giving recommended 30 IP for [additional services (like VCF Automation, log management, realtime metrics, VCF operations for networks)] (https://techdocs.broadcom.com/us/en/vmware-cis/vcf/vcf-9-0-and-later/9-1/planning-and-preparation/vcf-components-fqdns-and-ip-addresses/additional-vcf-instance-fqdns-and-ip-addresses.html#GUID-d015cb9f-36fd-49c0-a27a-66d37eaeb641-en_id-2da7e1c7-ae15-4b3b-8768-834bead3ec4e)
+    * Updated operationalmode from "ENS" (Enhanced DataPath Dedicated) where you need to know your workload (packet/MTU) size and assign cores exactly right like in Telco to "ENS_INTERRUPT" (Enhanced DataPath Standard) [watch Samuel Kommu explain how EDP Standard it's automatically tunned up to hundreds Gbit/s Nic](https://www.vmware.com/explore/video/6403822316112)
+  * Updated setup_vcf_installer.ps1: 
+    * Reverted to Offline Depot configuration using **$VCFInstallerDepotUrl** so that http webserver will now be un-authtenticated (essentially ommit username and password if using python http_server_auth.py) 
+
 * **07/03/26**
   * related blog posts: [vcf-9.1-in-a-box-nfs](https://strivevirtually.net/post/vcf-9.1-in-a-box-nfs/)
   * Changed to 2 ESXi Nodes with a  3rd box for NFS datastore running on Rocky Linux 9 VM with 8vnic bonded with MTU 9000 on VMware Workstation on Windows bridged to 10G nic with MTU 9014
